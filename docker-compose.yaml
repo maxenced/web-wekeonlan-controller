@@ -1,0 +1,9 @@
+services:
+  wakenerr:
+    build: .
+    network_mode: host
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+    environment:
+      - CONFIG_PATH=/app/config.yaml
+    restart: unless-stopped
