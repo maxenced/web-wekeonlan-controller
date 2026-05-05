@@ -2,22 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wakenerr</title>
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <h1>Dashboard</h1>
-  <% if (user) { %>
-    <p>Welcome, <%= user.displayName || user.id %></p>
-  <% } %>
-  <ul>
-    <% services.forEach(function(service) { %>
-      <li>
-        <strong><%= service.name %></strong> — status: <%= service.status %>
-        <form method="POST" action="/wake/<%= service.name %>">
-          <button type="submit">Wake</button>
-        </form>
-      </li>
-    <% }); %>
-  </ul>
+  <header class="app-header">
+    <div class="header-left">
+      <h1 class="app-title">Wakenerr</h1>
+    </div>
+    <div class="header-right">
+      <% if (typeof user !== 'undefined' && user) { %>
+        <span class="user-name"><%= user.displayName || user.email %></span>
+        <a href="/auth/logout" class="btn btn-small">Logout</a>
+      <% } %>
+    </div>
+  </header>
+  <main class="content">
+    <div class="services-grid" id="services-grid">
+      <% services.forEach(function(s) { %>
+        <div class="service-card" data-service="<%= s.name %>" data-url="<%= s.url %>">
+          <div class="service-header">
+            <h2 class="service-name"><%= s.name %></h2>
+            <span class="status-badge status-<%= s.status %>"><%= s.status %></span>
+          </div>
+          <p class="service-host"><%= s.host %></p>
+          <div class="service-actions">
+            <% if (s.status === 'down') { %>
+              <form method="POST" action="/wake/<%= s.name %>">
+                <button type="submit" class="btn btn-wake">Wake</button>
+              </form>
+            <% } else if (s.status === 'starting') { %>
+              <span class="spinner-inline"></span>
+              <span class="starting-text">Starting...</span>
+            <% } else if (s.status === 'ready') { %>
+              <a href="<%= s.url %>" class="btn btn-open" target="_blank" rel="noopener">Open</a>
+            <% } %>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </main>
+  <script src="/client.js"></script>
 </body>
 </html>

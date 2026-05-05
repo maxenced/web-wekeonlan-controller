@@ -2,16 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Waiting for <%= service.name %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wakenerr - Waking <%= service.name %></title>
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <h1>Waiting for <%= service.name %></h1>
-  <p>Current status: <%= status %></p>
-  <% if (status === 'ready') { %>
-    <p><a href="<%= service.url %>">Go to <%= service.name %></a></p>
-  <% } else { %>
-    <p>Waiting for the service to come online...</p>
-  <% } %>
-  <a href="/">Back to dashboard</a>
+  <header class="app-header">
+    <div class="header-left">
+      <h1 class="app-title">Wakenerr</h1>
+    </div>
+    <div class="header-right">
+      <a href="/" class="btn btn-small">Back</a>
+    </div>
+  </header>
+  <main class="content wait-content">
+    <div class="wait-card">
+      <h2 class="wait-title"><%= service.name %></h2>
+      <div class="wait-status" id="wait-status">
+        <% if (status === 'ready') { %>
+          <span class="status-badge status-ready">Ready</span>
+        <% } else { %>
+          <div class="spinner"></div>
+          <p class="wait-message" id="wait-message">
+            <% if (status === 'down') { %>
+              Sending wake packet...
+            <% } else { %>
+              Server is starting...
+            <% } %>
+          </p>
+        <% } %>
+      </div>
+      <div class="wait-actions" id="wait-actions" style="<%= status === 'ready' ? '' : 'display:none' %>">
+        <a href="<%= service.url %>" class="btn btn-open btn-large">Go to <%= service.name %></a>
+      </div>
+    </div>
+  </main>
+  <script>
+    window.__SERVICE_NAME__ = "<%= service.name %>";
+    window.__SERVICE_URL__ = "<%= service.url %>";
+  </script>
+  <script src="/client.js"></script>
 </body>
 </html>
