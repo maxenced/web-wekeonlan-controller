@@ -2,6 +2,7 @@ import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { AppConfig } from './config.js';
 import { configurePassport } from './auth/passport.js';
 import { isAuthenticated, isAllowed } from './auth/middleware.js';
@@ -10,6 +11,8 @@ import { createAuthRoutes } from './routes/auth.js';
 import { createDashboardRoutes } from './routes/dashboard.js';
 import { createWakeRoutes } from './routes/wake.js';
 import { createSseRoutes } from './routes/sse.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export function createApp(config: AppConfig, monitor: Monitor): express.Express {
   const app = express();
