@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+</head>
+<body>
+  <h1>Dashboard</h1>
+  <% if (user) { %>
+    <p>Welcome, <%= user.displayName || user.id %></p>
+  <% } %>
+  <ul>
+    <% services.forEach(function(service) { %>
+      <li>
+        <strong><%= service.name %></strong> — status: <%= service.status %>
+        <form method="POST" action="/wake/<%= service.name %>">
+          <button type="submit">Wake</button>
+        </form>
+      </li>
+    <% }); %>
+  </ul>
+</body>
+</html>

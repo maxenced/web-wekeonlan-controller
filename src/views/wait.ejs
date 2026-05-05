@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Waiting for <%= service.name %></title>
+</head>
+<body>
+  <h1>Waiting for <%= service.name %></h1>
+  <p>Current status: <%= status %></p>
+  <% if (status === 'ready') { %>
+    <p><a href="<%= service.url %>">Go to <%= service.name %></a></p>
+  <% } else { %>
+    <p>Waiting for the service to come online...</p>
+  <% } %>
+  <a href="/">Back to dashboard</a>
+</body>
+</html>
